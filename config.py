@@ -10,7 +10,8 @@ app = {
     'modules': ['iot'],
     'static_root': '%(confdir)s/public',
     'template_path': '%(confdir)s/iot/templates',
-    'debug': False,
+    'debug': True,
+    'default_renderer': 'jinja',
     'errors': {
         404: '/error/404',
         '__force_dict__': True

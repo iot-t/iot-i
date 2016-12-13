@@ -21,5 +21,4 @@ class v1Controller(object):
 
     @expose('json')
     def index(self):
-        context.redis_db().set_key('apiversion', '1.0.0')
         return {"apiversion": "1.0.0"}

@@ -17,7 +17,7 @@ setup(
         "sqlalchemy",
         "redis",
         "pymongo",
-        "pymsql",
+        "pymysql",
     ],
     test_suite='iot',
     zip_safe=False,

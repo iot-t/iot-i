@@ -16,6 +16,5 @@ def setup_app(config):
     return make_app(
         app_conf.pop('root'),
         logging=getattr(config, 'logging', {}),
-        hooks=app_hooks,
         **app_conf
     )
