@@ -18,6 +18,7 @@ setup(
         "redis",
         "pymongo",
         "pymysql",
+        "alembic",
     ],
     test_suite='iot',
     zip_safe=False,
