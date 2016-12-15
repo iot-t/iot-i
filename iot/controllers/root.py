@@ -12,6 +12,10 @@ class RootController(object):
     @expose(generic=True, template='index.html')
     def index(self):
         return dict()
+    
+    @expose(generic=True, template='home.html')
+    def home(self):
+        return {'user': True}
 
     @index.when(method='POST')
     def index_post(self, q):

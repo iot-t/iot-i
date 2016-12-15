@@ -11,7 +11,7 @@ class v1Controller(object):
 
     def __init__(self):
         self.admin = secure(admin.AdminController(), 'check_admin')
-        selfregister = register.RegisterController()
+        self.register = register.RegisterController()
         self.login = login.LoginController()
         self.devices = devices.DevicesController()
 

@@ -1,0 +1,34 @@
+<!--
+ * CoreUI - Open Source Bootstrap Admin Template
+ * @version v1.0.0-alpha.2
+ * @link http://coreui.io
+ * Copyright (c) 2016 creativeLabs Łukasz Holeczek
+ * @license MIT
+ -->
+<!DOCTYPE html>
+
+    <header class="navbar">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav hidden-md-down">
+                <li class="nav-item px-1">
+                    <a class="nav-link" href="#"><img>LOGO</img></a>
+                </li>
+                <li class="nav-item px-1">
+                    <a class="nav-link" href="#">home</a>
+                </li> 
+            </ul>
+            <ul class="nav navbar-nav float-xs-right hidden-md-down">
+                <li class="nav-item px-1">
+                    {% if user %}
+                    <a class="nav-link" href="v1/login">LOGOUT</a>
+                    {% else %}
+                    <a class="nav-link" href="v1/login">LOGIN</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item px-1">
+                    <a class="nav-link" href="#">about</a>
+                </li> 
+            </ul>
+        </div>
+    </header>
+
