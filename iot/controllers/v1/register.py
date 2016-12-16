@@ -1,4 +1,4 @@
-from pecan import expose
+from pecan import expose,override_template
 from pecan.rest import RestController
 
 from iot.model.sqlalchemy_db import user
@@ -42,15 +42,15 @@ class RegisterController(RestController):
         email = send_email.send_email(verify_key, user_db.email) 
         email.send_email()
 
-    @expose('register_sucess')
+    @expose('json')
     def post(self):
         name = context.get_post_data_with_key('name')
         pwd = context.get_post_data_with_key('passwd')
         email = context.get_post_data_with_key('email')
 
         if not self._check_user_data_vaild(name, pwd, email):
-            override_template("register_fail")
-            return {'error': 'invaild passwd or name or email'}
+            return {'success': False,
+                    'error_msg': 'invaild passwd or name or email'}
 
         with context.session() as session:
             user_db = user.User(name=name, passwd=pwd, email=email)
@@ -60,4 +60,4 @@ class RegisterController(RestController):
         verify_key = self._set_verify_key(user_db)
         self._send_verify_email(verify_key, user_db)
 
-        return {"verify_key": verify_key}
+        return {"success": True}

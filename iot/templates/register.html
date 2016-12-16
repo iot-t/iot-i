@@ -11,6 +11,9 @@
 {% include "header.html" %}
 
 <body>
+{% include "header_nav.html" %}
+<div id="notify_info">
+</div>
     <div class="container d-table">
         <div class="d-100vh-va-middle">
             <div class="row">
@@ -63,9 +66,42 @@
             </div>
         </div>
     </div>
-
+{% include "footer.html" %}
 {% include "bootstrap.html" %}
-
+<script>
+$("#button_create_account").click(function (){
+    var user_name = $("#user_name").val();
+    var user_email = $("#user_email").val();
+    var passwd_1 = $("#passwd_1").val();
+    var passwd_2 = $("#passwd_2").val();
+    var sucess_fail = '<div class="alert alert-danger alert-dismissible">\
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\
+          <strong>fail! please verify your emial address </strong>\
+          </div>'
+    var sucess_info = '<div class="alert alert-success alert-dismissible">\
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\
+          <strong>success! please login to your email and active </strong>\
+          </div>'
+    // check if vaild
+    if (passwd_1 =="" || passwd_1 != passwd_2) {
+        $("#notify_info").append(sucess_fail);
+    } else {
+        $.post('register', {name: user_name,
+            email: user_email, 
+            passwd: passwd_1})
+            .done(function (ret){
+                if (ret['success']) {
+                    $("#notify_info").append(sucess_info);
+                } else {
+                    $("#notify_info").append(sucess_fail);
+                }
+            })
+            .fail(function (){
+                $("#notify_info").append(sucess_fail);
+            });
+    }
+});
+</script>
 </body>
 
 </html>
