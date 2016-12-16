@@ -26,8 +26,8 @@ def upgrade():
         sa.Column('passwd', sa.String(50), nullable=False),
         sa.Column('salt', sa.String(50), nullable=False),
         sa.Column('email', sa.String(50), nullable=False),
-        sa.Column('create_at', sa.DateTime, defualt=datetime.datetime.utcnow),
-        sa.Column('actived', sa.Boolean, defualt=False)
+        sa.Column('create_at', sa.DateTime, default=datetime.datetime.utcnow),
+        sa.Column('actived', sa.Boolean, default=False)
     )
 
 def downgrade():

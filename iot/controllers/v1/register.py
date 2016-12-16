@@ -1,3 +1,7 @@
+import os
+import validators
+import hashlib
+
 from pecan import expose,override_template
 from pecan.rest import RestController
 
@@ -15,9 +19,16 @@ class RegisterController(RestController):
     def get_all(self):
         return {'user': False}
 
+    def _hash_passwd_with_salt(self, pwd, salt):
+        sha256 = hashlib.sha256(pwd + salt)
+        return sha256.hexdigest()
+
     def _check_email(self, email):
         # Check if has register with this email
-        return True
+        try:
+            return validators.eamil(email)
+        except validators.ValidationFailure:
+            return False
 
     def _check_user_data_vaild(self, name, pwd, email):
         if not (name and pwd and email):
@@ -52,8 +63,10 @@ class RegisterController(RestController):
             return {'success': False,
                     'error_msg': 'invaild passwd or name or email'}
 
+        salt = os.urandom(30)
+        pwd = self._hash_passwd_with_salt(pwd, salt)
         with context.session() as session:
-            user_db = user.User(name=name, passwd=pwd, email=email)
+            user_db = user.User(name=name, passwd=pwd, email=email, salt=salt)
             session.add(user_db)
 
         # send verify email to customer

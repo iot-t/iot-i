@@ -82,8 +82,9 @@ $("#button_create_account").click(function (){
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\
           <strong>success! please login to your email and active </strong>\
           </div>'
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     // check if vaild
-    if (passwd_1 =="" || passwd_1 != passwd_2) {
+    if (passwd_1 =="" || passwd_1 != passwd_2 || !re.test(user_email)) {
         $("#notify_info").append(sucess_fail);
     } else {
         $.post('register', {name: user_name,

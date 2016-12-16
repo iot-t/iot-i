@@ -19,6 +19,7 @@ setup(
         "pymongo",
         "pymysql",
         "alembic",
+        "validators",
     ],
     test_suite='iot',
     zip_safe=False,
