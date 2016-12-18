@@ -32,11 +32,15 @@ class contextManager(object):
         # get user role
         pass
     
-    def get_session(self):
+    def get_db_session(self):
         return model.get_current_session()
 
     def get_post_data_with_key(self, key):
-        return request.POST.get(key)
+        data = request.POST.get(key)
+        # why post data is unicode?
+        if isinstance(data, unicode):
+            data = data.encode('UTF-8')
+        return data
 
     def redis_db(self):
         return request.context['_iot_redis']

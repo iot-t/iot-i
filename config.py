@@ -50,7 +50,7 @@ logging = {
 
 # Bindings and options to pass to SQLAlchemy's ``create_engine``
 sqlalchemy = {
-    'url': 'mysql://root:@localhost/dbname?charset=utf8&use_unicode=0',
+    'url': 'mysql://root:abc123@localhost/iot_test?charset=utf8&use_unicode=0',
     'echo': False,
     'echo_pool': False,
     'pool_recycle': 3600,

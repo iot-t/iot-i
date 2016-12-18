@@ -16,6 +16,11 @@ class RootController(object):
     @expose(generic=True, template='home.html')
     def home(self):
         return {'user': True}
+    
+    @expose(generic=True, template='home_test.html')
+    def home_test(self):
+        return {'user': True}
+
 
     @index.when(method='POST')
     def index_post(self, q):

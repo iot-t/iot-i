@@ -1,0 +1,83 @@
+<!--
+ * CoreUI - Open Source Bootstrap Admin Template
+ * @version v1.0.0-alpha.2
+ * @link http://coreui.io
+ * Copyright (c) 2016 creativeLabs Łukasz Holeczek
+ * @license MIT
+ -->
+<!DOCTYPE html>
+<html lang="en">
+{% include "header.html" %}
+<head>
+<style type="text/css">
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
+</style>
+
+</head>
+<body>
+{% include "header_nav.html" %}
+<div id="notify_info">
+</div>
+<div class="vertical-center">
+<div class="container">
+<div class="row">
+<form class="form-inline" >
+  <div class="form-group">
+    <label for="exampleInputName2">Name</label>
+    <input type="text" class="form-control"  placeholder="Jane Doe" id="user">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputEmail2">Email</label>
+    <input type="email" class="form-control"  placeholder="jane.doe@example.com" id="email">
+  </div>
+    <button type="button" id="verify_email" class="btn btn-primary">Send invitation</button>
+</form>
+</div>
+</div>
+</div>    
+
+{% include "footer.html" %}
+{% include "bootstrap.html" %}
+<script>
+$("#verify_email").click(function () {
+     var fail_info = '<div class="alert alert-danger alert-dismissible">\
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\
+          <strong>fail! please verify your emial address </strong>\
+          </div>'
+    var sucess_info = '<div class="alert alert-success alert-dismissible">\
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\
+          <strong>success! please login to your email and active </strong>\
+          </div>'
+
+    var name = $("#user").val();
+    var email = $("#email").val();
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (name == "" || !re.test(email)) {
+        $("#notify_info").append(fail_info);
+    } else {
+        $.post('ajax_forget_passwd', {name:name, email:email})
+        .done(function (ret){
+            if (ret['sucess']){
+                $("#notify_info").append(sucess_info)
+            }else {
+                $("#notify_info").append(fail_info); 
+            }
+        })
+        .fail(function (){
+            $("#notify_info").append(fail_info); 
+        });
+    }
+    
+}
+);
+</script>
+
+</body>
+
+</html>

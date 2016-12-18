@@ -23,7 +23,7 @@ def upgrade():
         'users',
         sa.Column('id', sa.Integer, primary_key=True, autoincrement=True),
         sa.Column('name', sa.String(20), nullable=False),
-        sa.Column('passwd', sa.String(50), nullable=False),
+        sa.Column('passwd', sa.String(64), nullable=False),
         sa.Column('salt', sa.String(50), nullable=False),
         sa.Column('email', sa.String(50), nullable=False),
         sa.Column('create_at', sa.DateTime, default=datetime.datetime.utcnow),

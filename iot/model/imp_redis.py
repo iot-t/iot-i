@@ -7,14 +7,14 @@ class redisClient(object):
     def __init__(self, kwargs):
         self.redisCli = redis.StrictRedis(**kwargs)
 
-    def set_key(self, key, vlaue):
+    def set_key(self, key, value):
         key = self.KEY_PREFIX + str(key)
         # todo check if success
-        self.redisCli.set(key, vlaue)
+        self.redisCli.set(key, value)
 
-    def set_key_with_timeout(self, key, vlaue, timeout):
+    def set_key_with_timeout(self, key, value, timeout):
         key = self.KEY_PREFIX + str(key)
-        return self.redisCli.setex(key, vlaue, timeout)
+        return self.redisCli.setex(key, timeout, value)
 
     def get_key(self, key):
         key = self.KEY_PREFIX + str(key)

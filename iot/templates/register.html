@@ -74,7 +74,7 @@ $("#button_create_account").click(function (){
     var user_email = $("#user_email").val();
     var passwd_1 = $("#passwd_1").val();
     var passwd_2 = $("#passwd_2").val();
-    var sucess_fail = '<div class="alert alert-danger alert-dismissible">\
+    var fail_info = '<div class="alert alert-danger alert-dismissible">\
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\
           <strong>fail! please verify your emial address </strong>\
           </div>'
@@ -85,7 +85,7 @@ $("#button_create_account").click(function (){
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     // check if vaild
     if (passwd_1 =="" || passwd_1 != passwd_2 || !re.test(user_email)) {
-        $("#notify_info").append(sucess_fail);
+        $("#notify_info").append(fail_info);
     } else {
         $.post('register', {name: user_name,
             email: user_email, 
@@ -94,11 +94,11 @@ $("#button_create_account").click(function (){
                 if (ret['success']) {
                     $("#notify_info").append(sucess_info);
                 } else {
-                    $("#notify_info").append(sucess_fail);
+                    $("#notify_info").append(fail_info);
                 }
             })
             .fail(function (){
-                $("#notify_info").append(sucess_fail);
+                $("#notify_info").append(fail_info);
             });
     }
 });

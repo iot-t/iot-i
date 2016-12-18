@@ -3,31 +3,22 @@ from email import encoders
 from email.header import Header
 from email.mime.text import MIMEText
 from email.utils import parseaddr, formataddr
-
-def _format_addr(s):
-    name, addr = parseaddr(s)
-    return formataddr(( \
-           Header(name, 'utf-8').encode(), \
-           addr.encode('utf-8') if isinstance(addr, unicode) else addr))
+from pecan import render
 
 class send_email(object):
-    FROM_ADDR = 'XXX@126.com'
-    FROM_PASSWD = '123456'
-    SMTP_SERVER = 'XXXX'
+    FROM_ADDR = 'iot_i_team@126.com'
+    PASSWD = '123456abc'
+    SMTP_SERVER = 'smtp.126.com'
 
-    def __init__(self, verify_key, to_addr):
-        urls = '127.0.0.1:8080/account?verify_key='+verify_key
-        texts = "<html><body>Welcom! Please to active you account by follow links! <a>%s</a> </body></html>" % urls
-        
+    def __init__(self, to_addr, render_template='welcome_register'):
         self.to_addr = to_addr
-        self.msg = MIMEText(texts, 'plain', 'utf-8')
-        self.msg['From'] = _format_addr(u'IoTAdmin <%s>' % self.FROM_ADDR)
-        self.msg['To'] = _format_addr(u'yous <%s>' % to_addr)
-        self.msg['Subject'] = Header(u'Welcom registe', 'utf-8').encode()
+        self.template = render_template + '.jinja2'
 
-    def send_email(self):
+    def send_email(self, render_context):
+        render_context['custom_email'] = self.to_addr
         server = smtplib.SMTP(self.SMTP_SERVER, 25)
         server.set_debuglevel(1)
         server.login(self.FROM_ADDR, self.PASSWD)
-        server.sendmail(self.FROM_ADDR, [self.to_addr], self.msg.as_string())
+        email_body = render(self.template, render_context)
+        server.sendmail(self.FROM_ADDR, [self.to_addr], email_body.encode('utf-8'))
         server.quit()
