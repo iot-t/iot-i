@@ -20,7 +20,7 @@ class redisClient(object):
         key = self.KEY_PREFIX + str(key)
         return self.redisCli.get(key)
 
-    def key_exist(self, key):
+    def key_exists(self, key):
         key = self.KEY_PREFIX + str(key)
         return self.redisCli.exists(key)
 

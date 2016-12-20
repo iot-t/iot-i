@@ -41,6 +41,14 @@ class contextManager(object):
         if isinstance(data, unicode):
             data = data.encode('UTF-8')
         return data
+    
+    def get_get_data_with_key(self, key):
+        data = request.GET.get(key)
+        # why post data is unicode?
+        if isinstance(data, unicode):
+            data = data.encode('UTF-8')
+        return data
+
 
     def redis_db(self):
         return request.context['_iot_redis']

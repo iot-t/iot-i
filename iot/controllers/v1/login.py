@@ -1,6 +1,6 @@
 import os
 import binascii
-from pecan import expose, abort
+from pecan import expose, abort, redirect
 from pecan.rest import RestController
 
 from iot.model.sqlalchemy_db import user
@@ -13,7 +13,8 @@ class LoginController(RestController):
         "reset_passwd": ["GET"],
         "ajax_reset_passwd": ["POST"],
         "forget_passwd": ["GET"],
-        "ajax_forget_passwd": ["POST"]
+        "ajax_forget_passwd": ["POST"],
+        "account_active": ["GET"]
     }
 
     @expose("login.html")
@@ -23,6 +24,20 @@ class LoginController(RestController):
     @expose("forget_passwd.html")
     def forget_passwd(self):
         return {}    
+    
+    @expose() 
+    def account_active(self):
+        redis_db = context.redis_db()
+        verify_key = context.get_get_data_with_key('verify_key')
+        user_id = redis_db.get_key(verify_key)
+        print verify_key
+        if user_id and verify_key:
+            db_session = context.get_db_session()
+            user_db = db_session.query(user.User).filter_by(id=user_id).first()
+            if user_db:
+                user_db.active = True
+                redirect('/v1/login')
+        abort(404)           
 
     @expose('json')
     def ajax_forget_passwd(self):
@@ -49,9 +64,10 @@ class LoginController(RestController):
 
     @expose("reset_passwd.html")
     def reset_passwd(self, reset_key):
-        redis_db = cntext.redis_db()
+        redis_db = context.redis_db()
         if redis_db.key_exists('reset_' + reset_key):
             return {'reset_key': reset_key}
+        return {'reset_key': reset_key}
         
         return abort(404)
     

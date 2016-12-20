@@ -62,7 +62,7 @@ $("#verify_email").click(function () {
         console('test')
         $("#notify_info").append(fail_info);
     } else {
-        $.post('ajax_reset_passwd', {name:name, email:email})
+        $.post('ajax_reset_passwd', {new_passwd: passwd_1, reset_key: "{{ reset_key }}" })
         .done(function (ret){
             if (ret['sucess']){
                 $("#notify_info").append(sucess_info)
