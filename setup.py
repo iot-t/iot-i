@@ -20,6 +20,7 @@ setup(
         "pymysql",
         "alembic",
         "validators",
+        "requests",
     ],
     test_suite='iot',
     zip_safe=False,
