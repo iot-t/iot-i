@@ -17,17 +17,26 @@
 
     <!-- Main content -->
 <main class="main">
-    <div class="container">
+    <div class="container  col-md-8">
+{% if not sucess %}
+<div class="row col-sm-offset-2">
+<div class="alert alert-danger alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong>Fail, please check you device id</strong>
+</div>
+</div>
+{% endif %}
+<div class="row">
         <form method="POST" action="/v1/devices">
            <div class="form-group row">
-                <label for="inputEmail3" class="col-sm-2 col-form-label">DEVICE ID</label>
-                <div class="col-sm-10">
+                <label for="inputEmail3" class="col-sm-4 col-form-label">DEVICE ID</label>
+                <div class="col-sm-8">
                     <input type="text" class="form-control" id="device_id" name="device_id" placeholder="1234567890">
                 </div>
             </div>
             <div class="form-group row">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">PROFILE TYPE</label>
-                <div class="col-sm-10">
+                <label for="inputPassword3" class="col-sm-4 col-form-label">PROFILE TYPE</label>
+                <div class="col-sm-8">
                     <select class="form-control" id="exampleSelect1" name="profile_type">
                         <option>1</option>
                         <option>2</option>
@@ -38,12 +47,13 @@
                 </div>
             </div>
             <div class="form-group row">
-                <div class="offset-sm-2 col-sm-10">
+                <div class="offset-sm-4 col-sm-8">
                     <button type="submit" class="btn btn-primary">CREATE</button>
                 </div>
             </div>
         </form>
     </div>
+</div>
 </main>
 {% include "footer.html" %}
 {% include "bootstrap.html" %}
@@ -56,8 +66,8 @@
     <!-- GenesisUI main scripts -->
     <script src="/js/app.js"></script>
 
-    <!-- Custom scripts required by this view -->
-    <script src="/js/views/main.js"></script>
+    <!-- Custom scripts required by this view 
+    <script src="/js/views/main.js"></script> -->
 
 </body>
 

@@ -10,7 +10,7 @@ class contextManager(object):
             return request['session']
         else:
             return None
-
+    
     def set_session_token(self, user_id):
         # TODO set to redis
         redis = self.redis_db()
@@ -24,9 +24,29 @@ class contextManager(object):
 
         request.context['_iot_token_vaild'] = False
         redis = self.redis_db()
-        if redis.key_exists(self.get_session_token()):
+        user_id = redis.get_key(self.get_session_token())
+        if user_id:
+            self.user_id = user_id
             request.context['_iot_token_vaild'] = True
         return request.context['_iot_token_vaild']
+
+    @property
+    def user_id(self):
+        if hasattr(self, 'user_id'):
+            return self.user_id
+        self.user_id = None
+        return self.user_id
+    
+    @property
+    def user(self):
+        if not hasattr(self.user):
+            self.user = None
+            if self.user_id is not None:
+                db = self.get_db_session()
+                user_db = db.query(user.User).filter_by(id=self.user_id).first()
+                if user_db:
+                    self.user = user_db
+        return self.user
 
     def is_admin(self):
         # get user role

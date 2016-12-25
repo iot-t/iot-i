@@ -1,0 +1,95 @@
+<!--
+ * CoreUI - Open Source Bootstrap Admin Template
+ * @version v1.0.0-alpha.2
+ * @link http://coreui.io
+ * Copyright (c) 2016 creativeLabs Łukasz Holeczek
+ * @license MIT
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "header.html" %}
+
+<body class="navbar-fixed sidebar-nav fixed-nav">
+{% include "header_nav.html" %}
+
+{% include "sidebar_nav.html" %}
+
+    <!-- Main content -->
+<main class="main">
+    <div class="container  col-md-8">
+<div class="row col-sm-offset-2" id="notify_info">
+</div>
+<div class="row">
+        <form>
+           <div class="form-group row">
+                <label for="inputEmail3" class="col-sm-4 col-form-label">DEVICE ID</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="device_id" name="device_id" placeholder="1234567890">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-4 col-form-label">COMMAND</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="push_command" name="push_command" placeholder="open door">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="offset-sm-4 col-sm-8">
+                    <button type="button" id="push" class="btn btn-primary">PUSH</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</main>
+{% include "footer.html" %}
+{% include "bootstrap.html" %}
+    <!-- Bootstrap and necessary plugins -->
+    <script src="/bower_components/pace/pace.min.js"></script>
+
+    <!-- Plugins and scripts required by all views -->
+    <script src="/bower_components/chart.js/dist/Chart.min.js"></script>
+
+    <!-- GenesisUI main scripts -->
+    <script src="/js/app.js"></script>
+
+    <!-- Custom scripts required by this view 
+    <script src="/js/views/main.js"></script> -->
+<script>
+$("#push").click(function () {
+     var fail_info = '<div class="alert alert-danger alert-dismissible">\
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\
+          <strong>fail! please verify you device id </strong>\
+          </div>'
+    var sucess_info = '<div class="alert alert-success alert-dismissible">\
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\
+          <strong>success! </strong>\
+          </div>'
+
+    var device_id = $("#device_id").val();
+    var push_command = $("#push_command").val();
+    if (push_command == "" || device_id == "") {
+        $("#notify_info").append(fail_info);
+    } else {
+        $.post('ajax_push_command', {device_id: device_id, push_command: push_command })
+        .done(function (ret){
+            if (ret['sucess']){
+                $("#notify_info").append(sucess_info)
+            }else {
+                $("#notify_info").append(fail_info); 
+            }
+        })
+        .fail(function (){
+            $("#notify_info").append(fail_info); 
+        });
+    }
+    
+}
+);
+</script>
+
+
+</body>
+
+</html>

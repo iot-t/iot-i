@@ -1,0 +1,70 @@
+<!--
+ * CoreUI - Open Source Bootstrap Admin Template
+ * @version v1.0.0-alpha.2
+ * @link http://coreui.io
+ * Copyright (c) 2016 creativeLabs Łukasz Holeczek
+ * @license MIT
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "header.html" %}
+
+<body class="navbar-fixed sidebar-nav fixed-nav">
+{% include "header_nav.html" %}
+
+{% include "sidebar_nav.html" %}
+
+    <!-- Main content -->
+<main class="main">
+    <div class="container vertical-center">
+        <table class="table">
+            <thead class="thead-inverse">
+                <tr>
+                    <th>Device Name</th>
+                    <th>Update time</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+{% for dev in devices %}
+                <tr>
+                    <td scope="row" class="align-middle">{{ dev.device_name }}</td>
+                    <td class="align-middle">{{dev.update_time}}</td>
+                    <td class="align-middle">{{dev.device_status}}</td>
+                    <td class="align-middle">
+                        <div class="btn-group">
+  <button type="button" class="btn btn-sucess">Action</button>
+  <button type="button" class="btn btn-sucess dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="sr-only">Toggle Dropdown</span>
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="/v1/devices/{{dev.device_id}}/delete">Delete</a>
+    <a class="dropdown-item" href="/v1/devices/realtime_view?device_id={{dev.device_id}}&device_profile={{dev.device_profile}}">view_realData</a>
+  </div>
+</div>
+                    </td>
+                </tr>
+{% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+{% include "footer.html" %}
+{% include "bootstrap.html" %}
+    <!-- Bootstrap and necessary plugins -->
+    <script src="/bower_components/pace/pace.min.js"></script>
+
+    <!-- Plugins and scripts required by all views -->
+    <script src="/bower_components/chart.js/dist/Chart.min.js"></script>
+
+    <!-- GenesisUI main scripts -->
+    <script src="/js/app.js"></script>
+
+    <!-- Custom scripts required by this view -->
+    <! -- <script src="/js/views/main.js"></script> -->
+
+</body>
+
+</html>
