@@ -13,7 +13,7 @@ PROFILE_TYPE = {
 
 
 def parse_data_by_profile_type(msg, profile_type):
-    out_msg = None
+    out_msg = msg 
     if profile_type in PROFILE_TYPE:
         try:
             out_msg = PROFILE_TYPE[profile_type](msg)

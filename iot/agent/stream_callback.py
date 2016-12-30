@@ -6,8 +6,10 @@ from tornado import web
 
 from iot.agent import ws_manager
 from iot.agent import parse_subdata
+from iot.agent import task_thread 
 
 WS_MANAGER = ws_manager.get_manager()
+EXECTORS = task_thread.get_executors()
 
 @web.stream_request_body
 class streamCallback(web.RequestHandler):
@@ -18,10 +20,11 @@ class streamCallback(web.RequestHandler):
     def get(self):
         a = 'sucess'
         self.finish(a)
-    
+
+    @gen.coroutine 
     def data_received(self, chunk):
         id =  self.path_kwargs['id']
-        WS_MANAGER.send_to_client(id, chunk, True)
+        EXECTORS.submit(WS_MANAGER.send_to_client, id, chunk, True)
 
     @gen.coroutine    
     def post(self, **kwargs):

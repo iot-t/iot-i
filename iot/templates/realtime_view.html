@@ -34,10 +34,14 @@
 
     <!-- Custom scripts required by this view -->
 <!--    <script src="/js/views/main.js"></script> -->
+<!-- jsmpg and flv live stream -->
 <script src="/js/jsmpg.js"></script>
+<script src="//cdn.bootcss.com/flv.js/1.1.0/flv.js"></script>
+
 <script src="/js/real_view.js"></script>
+
 <script>
-{% set drawFunction = {'1':'TemplateView', '2': 'VideoView'} %}
+{% set drawFunction = {'1':'TemplateView', '2': 'VideoMpgView', '3': 'VideoFlvView'} %}
 var gWbSocketUrl = "ws://120.76.52.151:8888/ws_socket/{{ sub_call_url }}"
 $(gRealTimeView.{{ drawFunction[device_profile] }});
 </script>

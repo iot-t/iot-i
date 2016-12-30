@@ -9,23 +9,28 @@
 <html lang="en">
 {% include "header.html" %}
 <body>
-
 {% include "header_nav.html" %}
-
-<h1> welcom TODO  </h1>
-<h1> 这里添加主页介绍内容  </h1>
-<h1> 这里添加将来实现的feature </h1>
-<h1> 这里添加成功的solution </h1>
-<h1> 这里添加第三方 </h1>
-
-
+    
+<h1> 这里添加用户手册,以及一些编程API等 </h1>
+<div id="doc">
+</div>
 {% include "footer.html" %}
 {% include "bootstrap.html" %}
 <!-- Plugins and scripts required by all views -->
 <script src="/bower_components/chart.js/dist/Chart.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.5.4/showdown.min.js"></script>
 <!-- GenesisUI main scripts -->
 <script src="/js/app.js"></script>
+
+<script>
+var converter = new showdown.Converter();
+$.get('/doc/api.txt',function(text){
+    html = converter.makeHtml(text);
+    $("#doc").html(html);
+});
+
+</script>
 
 </body>
 

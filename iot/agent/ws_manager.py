@@ -36,6 +36,7 @@ class wbManager(object):
             LOG.error("device %(id)s not exist connecton", {'id': id})
     
     def send_to_client(self, id, msg, binary=False):
+        print 'id', id, 'msg', msg
         if id in self.all_client:
             # TODO catch error
             try:

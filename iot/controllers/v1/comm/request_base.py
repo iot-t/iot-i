@@ -10,6 +10,7 @@ class requestBase(object):
 
     def post(self, url, kwargs):
         url = self.base_path + url
+        print url
         return requests.post(url, data=kwargs)
 
     def get(self, url, **kwargs):
@@ -74,11 +75,41 @@ class deviceManageClient(requestBase):
 class deviceSubClient(requestBase):
     def __init__(self, path):
         super(deviceSubClient, self).__init__(path)
+    
+    def pushCommand(self,id, data):
+        try:
+            print id
+            print data
+            ret = self.post('', data)
+            ret.raise_for_status()
+        except Exception as e:
+            LOG.exception(e)
+            return False
+
+        return True
 
     def subscriteEvent(self, data):
         try:
             print data
             ret = self.post('', data)
+            ret.raise_for_status()
+        except Exception as e:
+            LOG.exception(e)
+            return False
+
+        return True
+
+class deviceCmdClient(requestBase):
+    def __init__(self, path):
+        super(deviceCmdClient, self).__init__(path)
+    
+    def pushCommand(self,id, data):
+        try:
+            print id
+            print data
+            ret = self.post(id, data)
+            print ret
+            print ret.text
             ret.raise_for_status()
         except Exception as e:
             LOG.exception(e)

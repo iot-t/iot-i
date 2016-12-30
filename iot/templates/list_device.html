@@ -24,6 +24,7 @@
                     <th>Device Name</th>
                     <th>Update time</th>
                     <th>Status</th>
+                    <th>Location</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -33,6 +34,7 @@
                     <td scope="row" class="align-middle">{{ dev.device_name }}</td>
                     <td class="align-middle">{{dev.update_time}}</td>
                     <td class="align-middle">{{dev.device_status}}</td>
+                    <td class="align-middle"><a class="fa fa-map-marker fa-lg mt-2" href="/v1/devices/mapp_view?device_id={{dev.device_id}}&device_profile={{dev.device_profile}}"></a></td>
                     <td class="align-middle">
                         <div class="btn-group">
   <button type="button" class="btn btn-sucess">Action</button>
@@ -63,7 +65,7 @@
     <script src="/js/app.js"></script>
 
     <!-- Custom scripts required by this view -->
-    <! -- <script src="/js/views/main.js"></script> -->
+    <!-- <script src="/js/views/main.js"></script> -->
 
 </body>
 

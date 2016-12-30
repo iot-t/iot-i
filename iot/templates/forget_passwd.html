@@ -8,25 +8,21 @@
 <!DOCTYPE html>
 <html lang="en">
 {% include "header.html" %}
-<head>
-<style type="text/css">
-.vertical-center {
-  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-  min-height: 100vh; /* These two lines are counted as one :-)       */
-
-  display: flex;
-  align-items: center;
-}
-</style>
-
-</head>
 <body>
 {% include "header_nav.html" %}
-<div id="notify_info">
-</div>
-<div class="vertical-center">
-<div class="container">
+<main class="main">
+<div class="container-fluid">
+
+<div class="animated fadeIn">
+
 <div class="row">
+
+<div id="notify_info" class="col-sm-12">
+</div>
+
+</div>
+
+<div class="row" style="margin-top:200px;">
 <form class="form-inline" >
   <div class="form-group">
     <label for="exampleInputName2">Name</label>
@@ -39,9 +35,12 @@
     <button type="button" id="verify_email" class="btn btn-primary">Send invitation</button>
 </form>
 </div>
-</div>
-</div>    
 
+
+</div>
+
+</div>
+</main>
 {% include "footer.html" %}
 {% include "bootstrap.html" %}
 <script>

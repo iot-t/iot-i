@@ -6,10 +6,13 @@ from pecan.rest import RestController
 from iot.context import context
 from iot.controllers.v1.comm import request_base
 
-dev_mana_url = 'http://www.yunt.top:81/api/dev/'
+dev_mana_url = 'http://www.yunt.top:83/api/dev/'
 DEV_MANA_CLI = request_base.deviceManageClient(dev_mana_url)
-dev_sub_url = 'http://www.yunt.top:81/api/user/sub/'
+dev_sub_url = 'http://www.yunt.top:83/api/user/sub'
 DEV_SUB_CLI = request_base.deviceSubClient(dev_sub_url)
+
+dev_command_url = 'http://www.yunt.top:83/api/user/p2dev/'
+DEV_CMD_CLI = request_base.deviceCmdClient(dev_command_url)
 
 LOG = logging.getLogger(__name__)
 
@@ -20,6 +23,7 @@ class DevicesController(RestController):
         "subscrite_post": ["POST"],
         "subscrite_get": ["GET"],
         "realtime_view": ["GET"],
+        "mapp_view": ["GET"],
     }
     
     @expose("push_command.html")
@@ -29,7 +33,10 @@ class DevicesController(RestController):
 
     @expose('json')
     def ajax_push_command(self):
-        return {"sucess": False}
+        device_id = context.get_post_data_with_key('device_id')
+        command = context.get_post_data_with_key('push_command')
+        ret = DEV_CMD_CLI.pushCommand(device_id, {'command': command})
+        return {"sucess": ret}
         
     @expose('json')
     def subscrite_post(self):
@@ -73,6 +80,17 @@ class DevicesController(RestController):
         return {"device_id": device_id,
                 'device_profile': device_profile,
                 'sub_call_url': sub_call_url}
+    
+    @expose('mapp_view.html')
+    def mapp_view(self):
+        device_id = context.get_get_data_with_key('device_id')
+        device_profile_id = context.get_get_data_with_key('device_profile')
+        # TODO get device profile from device manager
+        device_location = [116.397428, 39.90923]
+        sub_call_url = str(device_id) + '/' + str(device_profile_id)
+        return {'device_location': device_location,
+                'device_profile': device_profile_id,
+                'sub_call_url': sub_call_url}
 
     @expose()
     def get_one(self, id):
@@ -96,8 +114,15 @@ class DevicesController(RestController):
             'device_status': 'Active',
             'update_time': time.ctime(),    
         }
+        flv_video = {
+            'device_id': 123456,
+            'device_profile': 3,
+            'device_name': 'testLivevideo',
+            'device_status': 'Active',
+            'update_time': time.ctime(),    
+        }
 
-        devices = [test_dev, test_video]
+        devices = [test_dev, test_video, flv_video]
         return {'devices': devices}
 
     @expose('create_device.html')
@@ -136,7 +161,3 @@ class DevicesController(RestController):
     def delete(self, id):
         #delete an existing record
         pass
-    
-    @expose()
-    def _default(self):
-        return 'I cannot say hello in that language'

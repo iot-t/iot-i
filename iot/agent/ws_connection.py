@@ -1,30 +1,34 @@
+import struct
 from tornado import websocket
+from tornado import gen
 
 from iot.agent import ws_manager
-
+from iot.agent import redis_db
+ 
+REDIS_CONN = redis_db.get_redis_connection()
 WS_MANAGER = ws_manager.get_manager()
 
 class wsConnection(websocket.WebSocketHandler):
-  
-    def check_origin(self, origin):  
+
+    def check_origin(self, origin):
         return True
 
-    def _check_perrimt(self, token):
-        return True
-
+    @gen.coroutine
     def open(self, *args, **kwargs):
         print "on open===="
         self._id = kwargs['id']
-        if not self._check_perrimt(123):
+        token = None
+        ret = yield gen.Task(REDIS_CONN.get, token)
+        if ret:
             # TODO Close connection
-            return self.close()
+            self.send_error()
         print "wbsocket connection"
         WS_MANAGER.add_client(self._id, self)
         # init to client if possible
         profile_type = kwargs['profile_type']
         profile = self._get_device_profile(profile_type)
         if profile:
-            self.write_message(profile)
+            self.write_message(profile['data'], profile['binary'])
 
     def on_message(self, msg):
         print msg
@@ -37,6 +41,8 @@ class wsConnection(websocket.WebSocketHandler):
         ret = {}
         if profile_type == '2':
             # streaming apps
-            ret['width'] = 300
-            ret['high'] = 300
+            ret['binary'] = True
+            width = 640
+            height = 480
+            ret['data'] = struct.Struct('>4sHH').pack('jsmp', width, height)
         return ret

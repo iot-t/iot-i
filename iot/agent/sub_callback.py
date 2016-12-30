@@ -6,7 +6,9 @@ from tornado import web
 
 from iot.agent import ws_manager
 from iot.agent import parse_subdata
-
+from iot.agent import task_thread
+ 
+EXECTORS = task_thread.get_executors()
 WS_MANAGER = ws_manager.get_manager()
 
 class subCallback(web.RequestHandler):
@@ -33,5 +35,5 @@ class subCallback(web.RequestHandler):
         msg = parse_subdata.parse_data_by_profile_type(msg, profile_type)
         if msg is not None:
             print msg
-            WS_MANAGER.send_to_client(id, msg)
+            EXECTORS.submmit(WS_MANAGER.send_to_client, id, msg)
         self.finish('iot-gateway')

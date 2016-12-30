@@ -17,16 +17,21 @@
 
     <!-- Main content -->
 <main class="main">
-    <div class="container  col-md-8">
+<div class="container-fluid">
+<div class="animated fadeIn">
+
+    <div class="row">
 {% if not sucess %}
-<div class="row col-sm-offset-2">
+<div class="col-sm-12">
 <div class="alert alert-danger alert-dismissible">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
           <strong>Fail, please check you device id</strong>
 </div>
 </div>
 {% endif %}
-<div class="row">
+</div>
+<div class="row"  style="margin-top:100px;">
+<div class="col-sm-12">
         <form method="POST" action="/v1/devices">
            <div class="form-group row">
                 <label for="inputEmail3" class="col-sm-4 col-form-label">DEVICE ID</label>
@@ -53,6 +58,9 @@
             </div>
         </form>
     </div>
+    </div>
+</div>
+</div>
 </div>
 </main>
 {% include "footer.html" %}
