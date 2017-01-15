@@ -71,6 +71,10 @@ class RegisterController(RestController):
         db_session = context.get_db_session()
         pwd = self._hash_passwd_with_salt(pwd, salt)
         with db_session.begin(subtransactions=True):
+            user_db = db_session.query(user.User).filter_by(email=email).first()
+            if user_db:
+                return {'sucess': False,
+                        'error_msg': 'Invaild email'} 
             user_db = user.User(name=name, passwd=pwd, email=email, salt=salt)
             db_session.add(user_db)
 

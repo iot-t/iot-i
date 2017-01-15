@@ -6,16 +6,18 @@ from iot import model
 class contextManager(object):
 
     def get_session_token(self):
-        if 'session' in request:
-            return request['session']
+        if 'session' in request.environ['beaker.session']:
+            return request['beaker.session']['session']
         else:
             return None
     
     def set_session_token(self, user_id):
         # TODO set to redis
         redis = self.redis_db()
-        token = os.urandom()
+        token = os.urandom(20)
         redis.set_key(token, user_id)
+        request.environ['beaker.session']['session'] = token
+        request.environ['beaker.session'].save()
 
     def session_token_is_vaild(self):
         # compare with redis record

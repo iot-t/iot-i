@@ -66,6 +66,13 @@ mongo = {
     'url': 'mongodb://autoscrapy:123456@127.0.0.1/autoscrapy'
 }
 
+beaker = {
+    'session.key': 'sesionkey',
+    'session.type': 'cookie',
+    'session.validate_key': '009989900ec',
+    '__force_dict__': True
+}
+
 # Custom Configurations must be in Python dictionary format::
 #
 # foo = {'bar':'baz'}

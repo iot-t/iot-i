@@ -24,11 +24,11 @@ class redisClient(object):
         key = self.KEY_PREFIX + str(key)
         return self.redisCli.exists(key)
 
-    def del_keys(self, *keys):
+    def del_keys(self, keys):
         _keys = []
         for _k in keys:
-            _keys.append(str(_k) + self.KEY_PREFIX)
-        return self.redisCli.delete(_keys)
+            _keys.append(self.KEY_PREFIX + str(_k))
+        return self.redisCli.delete(*_keys)
 
     # Hash keys function
     def get_hkeys(self, name):

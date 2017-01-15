@@ -1,4 +1,5 @@
 from pecan import make_app
+from beaker.middleware import SessionMiddleware
 
 from iot import model
 from iot import hooks
@@ -13,9 +14,10 @@ def setup_app(config):
             hooks.SqlalchemyTransactionHook(),
     ]
 
-    return make_app(
+    app = make_app(
         app_conf.pop('root'),
         logging=getattr(config, 'logging', {}),
         hooks=app_hooks,
         **app_conf
     )
+    return SessionMiddleware(app, config.beaker)

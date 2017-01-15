@@ -19,7 +19,10 @@ class RootController(object):
     
     @expose(generic=True, template='home_test.html')
     def home_test(self):
-        return {'user': True}
+        return {'user': True,
+                'topic_device':{'test_topic':['device-123','device-234','device-345'],
+                                'test_notify': ['notify-123', 'notfiy-345','notif-567']}
+                }
 
     @expose(generic=True, template='doc.html')
     def doc(self):

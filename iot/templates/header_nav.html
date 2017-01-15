@@ -2,24 +2,17 @@
         <div class="container-fluid">
             <ul class="nav navbar-nav hidden-md-down">
                 <li class="nav-item px-1">
-                    <a class="nav-link" href="/home"><img>LOGO</img></a>
+                    <a class="nav-link" href="/"><img src="/images/logo.png"></img></a>
                 </li>
-                <li class="nav-item px-1">
-                    <a class="nav-link" href="/home_test">home</a>
-                </li> 
             </ul>
             <ul class="nav navbar-nav float-xs-right hidden-md-down">
                 <li class="nav-item px-1">
-                    {% if user %}
-                    <a class="nav-link" href="/v1/login">LOGOUT</a>
-                    {% else %}
-                    <a class="nav-link" href="/v1/login">LOGIN</a>
-                    {% endif %}
+                    <a class="nav-link" href="/v1/login"><i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
+</a>
                 </li>
                 <li class="nav-item px-1">
-                    <a class="nav-link" href="/doc">doc</a>
+                    <a class="nav-link" href="/doc"><i class="fa fa-book fa-2x" aria-hidden="true"></i></a>
                 </li> 
             </ul>
         </div>
 </header>
-

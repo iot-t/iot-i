@@ -19,6 +19,7 @@
 <main class="main">
     <div class="container">
     <h1>这里添加用户登录后自己的页面显示平台相关事件</h1>
+    <div id="mynetwork"></div>
     </div>
 </main>
 {% include "footer.html" %}
@@ -30,11 +31,56 @@
     <script src="/bower_components/chart.js/dist/Chart.min.js"></script>
 
     <!-- GenesisUI main scripts -->
+
     <script src="/js/app.js"></script>
-
     <!-- Custom scripts required by this view -->
-    <script src="/js/views/main.js"></script>
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.17.0/vis.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.17.0/vis.min.css" rel="stylesheet" type="text/css" />
+    <script>
+        // create an array with nodes
+    var edges = [],nodes=[];
+    var topic_device = {{ topic_device }};
+    var node_id = 0, group_id = 0;
+    for (var topic in topic_device) {
+        group_id = node_id;
+        nodes.push({id: group_id, label: topic});
+        for (var index = 0; index < topic_device[topic].length; index++) {
+            node_id = node_id + 1;
+            nodes.push({id: node_id, label: topic_device[topic][index], group: group_id});
+            edges.push({from: group_id, to: node_id});
+        }
+        node_id = node_id + 1;
+    };
+    if (edges.length > 0) {
+        var nodes = new vis.DataSet(nodes);
+        var edges = new vis.DataSet(edges);
+        var container = document.getElementById('mynetwork');
+        // provide the data in the vis format
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {
+            nodes: {
+                shape: 'dot',
+                size: 30,
+                font: {
+                    size: 32,
+                    color: '#ffffff'
+                },
+                borderWidth: 2
+            },
+            edges: {
+                width: 2
+            }
+        };
 
+        // initialize your network!
+        var network = new vis.Network(container, data, options);
+
+    }   
+    </script>
 </body>
 
 </html>

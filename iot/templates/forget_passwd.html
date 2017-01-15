@@ -8,9 +8,10 @@
 <!DOCTYPE html>
 <html lang="en">
 {% include "header.html" %}
-<body>
+<body class="btn-primary">
 {% include "header_nav.html" %}
-<main class="main">
+
+<div>
 <div class="container-fluid">
 
 <div class="animated fadeIn">
@@ -25,22 +26,23 @@
 <div class="row" style="margin-top:200px;">
 <form class="form-inline" >
   <div class="form-group">
-    <label for="exampleInputName2">Name</label>
+    <i class="fa fa-user-circle-o fa-2x" aria-hidden="true"></i> 
     <input type="text" class="form-control"  placeholder="Jane Doe" id="user">
   </div>
   <div class="form-group">
-    <label for="exampleInputEmail2">Email</label>
+    <i class="fa fa-envelope-o fa-2x"></i>
     <input type="email" class="form-control"  placeholder="jane.doe@example.com" id="email">
   </div>
-    <button type="button" id="verify_email" class="btn btn-primary">Send invitation</button>
+  <div class="form-group">
+    <button type="button" id="verify_email" class="btn btn-primary">找回密码</button>
+  </div>
 </form>
 </div>
-
-
+</div>
+</div>
 </div>
 
-</div>
-</main>
+<div class="btn-primary"> </div>
 {% include "footer.html" %}
 {% include "bootstrap.html" %}
 <script>

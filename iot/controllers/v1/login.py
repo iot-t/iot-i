@@ -1,5 +1,6 @@
 import os
 import binascii
+import hashlib 
 from pecan import expose, abort, redirect
 from pecan.rest import RestController
 
@@ -35,7 +36,7 @@ class LoginController(RestController):
             db_session = context.get_db_session()
             user_db = db_session.query(user.User).filter_by(id=user_id).first()
             if user_db:
-                user_db.active = True
+                user_db.actived = True
                 redirect('/v1/login')
         abort(404)           
 
@@ -49,17 +50,19 @@ class LoginController(RestController):
             return ret
         
         db_session = context.get_db_session()
-        user_db = db_session.query(user.User).filter_by(name=user_name, email=user_email).first()
-        if user_db:
-            timeout = 24 * 60 * 60
-            redis_db = context.redis_db()
-            reset_key = binascii.hexlify(os.urandom(50))
-            redis_key = 'reset_' + reset_key
-            redis_db.set_key_with_timeout(redis_key, user_db.id, timeout)
-            # TODO send email
-            email = send_email.send_email(user_db.email, 'forget_passwd')
-            email.send_email({'reset_key': reset_key})
-            ret['sucess'] = True
+
+        with db_session.begin(subtransactions=True):
+            user_db = db_session.query(user.User).filter_by(name=user_name, email=user_email).first()
+            if user_db:
+                timeout = 24 * 60 * 60
+                redis_db = context.redis_db()
+                reset_key = binascii.hexlify(os.urandom(50))
+                redis_key = 'reset_' + reset_key
+                redis_db.set_key_with_timeout(redis_key, user_db.id, timeout)
+                # TODO send email
+                email = send_email.send_email(user_db.email, 'forget_passwd')
+                email.send_email({'reset_key': reset_key})
+                ret['sucess'] = True
         return ret
 
     @expose("reset_passwd.html")
@@ -81,17 +84,34 @@ class LoginController(RestController):
         redis_db = context.redis_db()
         reset_user_id = redis_db.get_key(reset_key)
         if reset_user_id and new_passwd:
-            redis_db.del_key(reset_key)
+            redis_db.del_keys([reset_key])
             db_session = context.get_db_session()
-            user_db = db_session.query(user.User).filter_by(id=reset_user_id)
+            user_db = db_session.query(user.User).filter_by(id=reset_user_id).first()
             if user_db:
                 user_db.salt = binascii.hexlify(os.urandom(20))
                 passwd = new_passwd + user_db.salt
                 user_db.passwd = hashlib.sha256(passwd.encode("utf-8")).hexdigest()
+                #user_db.update({'salt':salt, 'passwd':passwd})
                 ret['sucess'] = True
 
         return ret
 
-    @expose('json')
+    @expose('home_test.html')
     def post(self):
-        return {"admin": "adminPort"}
+        user_name = context.get_post_data_with_key('user')
+        user_pwd = context.get_post_data_with_key('passwd')
+        user_db = context.get_db_session().query(user.User).filter_by(name=user_name).first()
+        if user_db and self._compare_pwd(user_pwd, user_db):
+            # set coookie
+            context.set_session_token(user_db.id)
+            return {}
+            
+
+        redirect('/')
+
+    def _compare_pwd(self, pwd, user_db):
+        pwd = pwd + user_db.salt
+        sha256 = hashlib.sha256(pwd.encode('utf-8'))
+        if sha256.hexdigest() == user_db.passwd:
+            return True
+        return False

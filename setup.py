@@ -24,6 +24,7 @@ setup(
         "tornado",
         "tornado-redis",
         "Tornado-MySQL",
+        "beaker"
     ],
     test_suite='iot',
     zip_safe=False,
